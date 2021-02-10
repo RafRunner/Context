@@ -46,11 +46,13 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="src\view\Form1.cs">
+    <Compile Include="src\arquivos\Arquivos.cs" />
+    <Compile Include="src\view\helpers\ViewHelper.cs" />
+    <Compile Include="src\view\MenuInicial.cs">
       <SubType>Form</SubType>
     </Compile>
-    <Compile Include="src\view\Form1.Designer.cs">
-      <DependentUpon>Form1.cs</DependentUpon>
+    <Compile Include="src\view\MenuInicial.Designer.cs">
+      <DependentUpon>MenuInicial.cs</DependentUpon>
     </Compile>
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
@@ -63,8 +65,8 @@
       <AutoGen>True</AutoGen>
       <DependentUpon>Resources.resx</DependentUpon>
     </Compile>
-    <EmbeddedResource Include="src\view\Form1.resx">
-      <DependentUpon>Form1.cs</DependentUpon>
+    <EmbeddedResource Include="src\view\MenuInicial.resx">
+      <DependentUpon>MenuInicial.cs</DependentUpon>
     </EmbeddedResource>
     <None Include="Properties\Settings.settings">
       <Generator>SettingsSingleFileGenerator</Generator>
@@ -79,5 +81,6 @@
   <ItemGroup>
     <None Include="App.config" />
   </ItemGroup>
+  <ItemGroup />
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>
