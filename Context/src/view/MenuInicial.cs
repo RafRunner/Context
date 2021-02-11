@@ -1,4 +1,5 @@
 ﻿using Context.src.arquivos;
+using Context.src.view;
 using Context.src.view.helpers;
 using System;
 using System.Collections.Generic;
@@ -23,7 +24,10 @@ namespace Context {
 
 		private void CarregaFrasesArquivo(string arquivo) {
 			if (string.IsNullOrEmpty(arquivo)) return;
-			frases = Arquivos.LerArquivo(arquivo).FindAll(linha => !string.IsNullOrEmpty(linha));
+			frases = new List<string>();
+			Arquivos.LerArquivo(arquivo).FindAll(linha => !string.IsNullOrEmpty(linha)).ForEach(frase => {
+				frases.Add(frase.Replace("\\n", "\n"));
+			});
 		}
 
 		private void SalvarConfigAtual() {
@@ -35,7 +39,7 @@ namespace Context {
 				.AppendLine(numNumeroParticipante.Value.ToString())
 				.AppendLine(tbArquivoFrases.Text);
 
-			var arquivoCache = Arquivos.CriaPastaRelativa("cache") + "//ultima_config.txt";
+			var arquivoCache = Arquivos.CriaPastaRelativa("cache") + "\\ultima_config.txt";
 			File.WriteAllText(arquivoCache, configAtual.ToString());
 		}
 
@@ -79,6 +83,33 @@ namespace Context {
 				MessageBox.Show("Arquivo de frases selecionado está vazio!", "Erro", MessageBoxButtons.OK, MessageBoxIcon.Stop);
 				return;
 			}
+			if (frases.Count % 2 != 0) {
+				MessageBox.Show("Arquivo de frases Deve ter um número par de linhas (pares de frases/instruções)!", "Erro", MessageBoxButtons.OK, MessageBoxIcon.Stop);
+				return;
+			}
+			var nomePesquisador = tbNomePesquisador.Text;
+			if (nomePesquisador == "") {
+				MessageBox.Show("O nome do pesquisador é obrigatório!", "Erro", MessageBoxButtons.OK, MessageBoxIcon.Stop);
+				return;
+			}
+			var nomeParticipante = tbNomeParticipante.Text;
+			if (nomeParticipante == "") {
+				MessageBox.Show("O nome do participante é obrigatório!", "Erro", MessageBoxButtons.OK, MessageBoxIcon.Stop);
+				return;
+			}
+			var idadeParticipante = numIdadeParticipante.Value;
+			if (idadeParticipante == 0) {
+				MessageBox.Show("A idade do participante é obrigatório!", "Erro", MessageBoxButtons.OK, MessageBoxIcon.Stop);
+				return;
+			}
+			var sexoParticipante = cbSexoParticipante.SelectedItem;
+			if (sexoParticipante == null) {
+				MessageBox.Show("O sexo do participante é obrigatório!", "Erro", MessageBoxButtons.OK, MessageBoxIcon.Stop);
+				return;
+			}
+			var numeroParticipante = numNumeroParticipante.Value;
+
+			new TelaFrase(frases).ShowDialog();
 		}
 	}
 }

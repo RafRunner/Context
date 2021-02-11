@@ -22,12 +22,12 @@ namespace Context.src.arquivos {
 		public static string GetCaminhoAbsoluto(string nomePasta, string nomeArquivo = "") {
 			var diretorioPai = Directory.GetCurrentDirectory();
 
-			var caminho = diretorioPai + "//" + nomePasta;
+			var caminho = diretorioPai + "\\" + nomePasta;
 			if (string.IsNullOrEmpty(nomeArquivo)) {
 				return caminho;
 			}
 
-			return caminho + "//" + nomeArquivo;
+			return caminho + "\\" + nomeArquivo;
 		}
 
 		public static List<string> LerArquivoRelativo(string nomePasta, string nomeArquivo) {
