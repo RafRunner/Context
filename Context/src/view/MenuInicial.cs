@@ -12,6 +12,9 @@ namespace Context {
 
 		private List<string> frases = null;
 
+		private static string PASTA_CACHE = "cache";
+		private static string ARQUIVO_ULTIMA_CONFIG = "ultima_config.txt";
+
 		public Form1() {
 			InitializeComponent();
 			CarregarUltimaConfig();
@@ -30,16 +33,16 @@ namespace Context {
 				.AppendLine(numNumeroParticipante.Value.ToString())
 				.AppendLine(tbArquivoFrases.Text);
 
-			var arquivoCache = Arquivos.CriaPastaRelativa("cache") + "\\ultima_config.txt";
+			var arquivoCache = Arquivos.CriaPastaRelativa(PASTA_CACHE) + $"\\{ARQUIVO_ULTIMA_CONFIG}";
 			File.WriteAllText(arquivoCache, configAtual.ToString());
 		}
 
 		private void CarregarUltimaConfig() {
-			if (!File.Exists(Arquivos.GetCaminhoAbsoluto("cache", "ultima_config.txt"))) {
+			if (!File.Exists(Arquivos.GetCaminhoAbsoluto(PASTA_CACHE, ARQUIVO_ULTIMA_CONFIG))) {
 				return;
 			}
 
-			var configAnterior = Arquivos.LerArquivoRelativo("cache", "ultima_config.txt");
+			var configAnterior = Arquivos.LerArquivoRelativo(PASTA_CACHE, ARQUIVO_ULTIMA_CONFIG);
 
 			tbNomePesquisador.Text = configAnterior[0];
 			tbNomeParticipante.Text = configAnterior[1];
@@ -102,12 +105,23 @@ namespace Context {
 			}
 			var numeroParticipante = numNumeroParticipante.Value;
 
+			var geradorRelatorio = new GeradorRelatorios(
+				nomePesquisador,
+				nomeParticipante,
+				Convert.ToInt32(idadeParticipante),
+				sexoParticipante.ToString(),
+				Convert.ToInt32(numeroParticipante),
+				frases
+			);
+
 			var backGround = new TelaMensagem("", false);
 			backGround.Show();
 			new TelaMensagem("Clique em qualquer lugar para iniciar o experimento", true).ShowDialog();
 			new TelaFrase(frases).ShowDialog();
 			new TelaMensagem("Fim do experimento, por favor chamar o experimentador", false).ShowDialog();
 			backGround.Close();
+
+			geradorRelatorio.GerarRelatorio();
 		}
 	}
 }
