@@ -102,7 +102,12 @@ namespace Context {
 			}
 			var numeroParticipante = numNumeroParticipante.Value;
 
+			var backGround = new TelaMensagem("", false);
+			backGround.Show();
+			new TelaMensagem("Clique em qualquer lugar para iniciar o experimento", true).ShowDialog();
 			new TelaFrase(frases).ShowDialog();
+			new TelaMensagem("Fim do experimento, por favor chamar o experimentador", false).ShowDialog();
+			backGround.Close();
 		}
 	}
 }
