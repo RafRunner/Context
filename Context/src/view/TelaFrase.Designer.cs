@@ -38,6 +38,7 @@
 			this.lblFrase.Size = new System.Drawing.Size(1033, 62);
 			this.lblFrase.TabIndex = 0;
 			this.lblFrase.Text = "A praia parecia um formigueiro naquele dia";
+			this.lblFrase.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
 			// 
 			// lblInstrucao
 			// 
@@ -48,6 +49,7 @@
 			this.lblInstrucao.Size = new System.Drawing.Size(1355, 48);
 			this.lblInstrucao.TabIndex = 1;
 			this.lblInstrucao.Text = "Escreva no espaço abaixo o que você pensa quando lê a informação acima.";
+			this.lblInstrucao.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
 			// 
 			// tbResposta
 			// 

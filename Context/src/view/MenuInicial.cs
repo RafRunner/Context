@@ -15,19 +15,10 @@ namespace Context {
 		public Form1() {
 			InitializeComponent();
 			CarregarUltimaConfig();
-			Console.WriteLine("banana");
 		}
 
 		private void Form1_FormClosing(object sender, FormClosingEventArgs e) {
 			SalvarConfigAtual();
-		}
-
-		private void CarregaFrasesArquivo(string arquivo) {
-			if (string.IsNullOrEmpty(arquivo)) return;
-			frases = new List<string>();
-			Arquivos.LerArquivo(arquivo).FindAll(linha => !string.IsNullOrEmpty(linha)).ForEach(frase => {
-				frases.Add(frase.Replace("\\n", "\n"));
-			});
 		}
 
 		private void SalvarConfigAtual() {
@@ -56,25 +47,27 @@ namespace Context {
 			cbSexoParticipante.SelectedIndex = int.Parse(configAnterior[3]);
 			numNumeroParticipante.Value = int.Parse(configAnterior[4]);
 			tbArquivoFrases.Text = configAnterior[5];
-
-			CarregaFrasesArquivo(tbArquivoFrases.Text);
 		}
 
-		private void SelecionarArquivoFrases() {
+		private void CarregaFrasesArquivo(string arquivo) {
+			if (string.IsNullOrEmpty(arquivo)) return;
+
+			frases = new List<string>();
+			Arquivos.LerArquivo(arquivo).FindAll(linha => !string.IsNullOrWhiteSpace(linha)).ForEach(frase => {
+				frases.Add(frase.Replace("\\n", "\r\n"));
+			});
+		}
+
+		private void btnSelecionarArquivo_Click(object sender, EventArgs e) {
 			string nomeArquivoFrases = ViewHelper.SelecionaArquivoComFiltro(openFileDialog, "TXT|*.txt");
 			if (string.IsNullOrEmpty(nomeArquivoFrases)) {
 				return;
 			}
 			tbArquivoFrases.Text = nomeArquivoFrases;
-
-			CarregaFrasesArquivo(nomeArquivoFrases);
-		}
-
-		private void btnSelecionarArquivo_Click(object sender, EventArgs e) {
-			SelecionarArquivoFrases();
 		}
 
 		private void btnIniciar_Click(object sender, EventArgs e) {
+			CarregaFrasesArquivo(tbArquivoFrases.Text);
 			if (frases == null) {
 				MessageBox.Show("Nenhum arquivo de frases selecionado!", "Erro", MessageBoxButtons.OK, MessageBoxIcon.Stop);
 				return;
