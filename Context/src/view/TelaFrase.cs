@@ -1,4 +1,5 @@
-﻿using System;
+﻿using Context.src.arquivos;
+using System;
 using System.Collections.Generic;
 using System.ComponentModel;
 using System.Data;
@@ -17,10 +18,13 @@ namespace Context.src.view {
 		private readonly List<string> frases;
 		private int indexFraseAtual = 0;
 
-		public TelaFrase(List<string> frases) {
+		private readonly GeradorRelatorio geradorRelatorio;
+
+		public TelaFrase(List<string> frases, GeradorRelatorio geradorRelatorio) {
 			InitializeComponent();
 
 			this.frases = frases;
+			this.geradorRelatorio = geradorRelatorio;
 
 			Location = new Point(0, 0);
 			Size = new Size(width, height);
@@ -55,6 +59,8 @@ namespace Context.src.view {
 			if (string.IsNullOrEmpty(resposta)) {
 				return;
 			}
+
+			geradorRelatorio.AdicionarEvento($"Resposta registrada para a {indexFraseAtual / 2}ª frase/instrução:\n{tbResposta.Text}\n");
 
 			if (indexFraseAtual == frases.Count) {
 				Close();

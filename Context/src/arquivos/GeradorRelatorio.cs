@@ -6,9 +6,7 @@ using System.Text;
 using System.Threading.Tasks;
 
 namespace Context.src.arquivos {
-	public class GeradorRelatorios {
-
-		private readonly List<string> frases;
+	public class GeradorRelatorio {
 
 		private static string PASTA_RELATORIOS = "Relatorios";
 		private static readonly string FORMATO_TIME = "HH:mm:ss";
@@ -18,7 +16,7 @@ namespace Context.src.arquivos {
 		private readonly StringBuilder conteudoRelatorio = new StringBuilder();
 		private readonly string nomeArquivo;
 
-		public GeradorRelatorios(
+		public GeradorRelatorio(
 			string nomePesquisador,
 			string nomeParticipante,
 			int idadeParticipante,
@@ -26,8 +24,6 @@ namespace Context.src.arquivos {
 			int numeroParticipante,
 			List<string> frases
 			) {
-			this.frases = frases;
-
 			var horaInicio = DateTime.Now;
 
 			nomeArquivo = $"{horaInicio.ToString(FORMATO_DATE_TIME_ARQUIVO)}-{nomePesquisador}-{nomeParticipante}.txt";
@@ -46,17 +42,21 @@ namespace Context.src.arquivos {
 				if (i % 2 != 0) conteudoRelatorio.AppendLine();
 			}
 
-			conteudoRelatorio.AppendLine("Respostas do participante:\n");
+			conteudoRelatorio.AppendLine("/////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////\n")
+				.AppendLine("Respostas do participante:\n");
 		}
 
 		public void AdicionarEvento(string mensagem) {
-			conteudoRelatorio.AppendLine(mensagem);
+			conteudoRelatorio.Append(DateTime.Now.ToString(FORMATO_TIME))
+				.Append(" - ")
+				.AppendLine(mensagem);
 		}
 
 		public void GerarRelatorio() {
 			var horaFim = DateTime.Now;
 
-			conteudoRelatorio.AppendLine("\nExperimento finalizado. Hora do fim: " + horaFim.ToString(FORMATO_TIME));
+			conteudoRelatorio.AppendLine("/////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////")
+				.AppendLine("\nExperimento finalizado. Hora do fim: " + horaFim.ToString(FORMATO_TIME));
 
 			var caminhoRelatorio = Arquivos.CriaPastaRelativa(PASTA_RELATORIOS) + "\\" + nomeArquivo;
 			File.WriteAllText(caminhoRelatorio, conteudoRelatorio.ToString());

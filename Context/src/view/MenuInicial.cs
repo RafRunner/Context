@@ -105,23 +105,25 @@ namespace Context {
 			}
 			var numeroParticipante = numNumeroParticipante.Value;
 
-			var geradorRelatorio = new GeradorRelatorios(
-				nomePesquisador,
-				nomeParticipante,
-				Convert.ToInt32(idadeParticipante),
-				sexoParticipante.ToString(),
-				Convert.ToInt32(numeroParticipante),
-				frases
-			);
+			
 
 			var backGround = new TelaMensagem("", false);
 			backGround.Show();
 			new TelaMensagem("Clique em qualquer lugar para iniciar o experimento", true).ShowDialog();
-			new TelaFrase(frases).ShowDialog();
+
+			var geradorRelatorio = new GeradorRelatorio(
+				 nomePesquisador,
+				 nomeParticipante,
+				 Convert.ToInt32(idadeParticipante),
+				 sexoParticipante.ToString(),
+				 Convert.ToInt32(numeroParticipante),
+				 frases
+			 );
+			new TelaFrase(frases, geradorRelatorio).ShowDialog();
+			geradorRelatorio.GerarRelatorio();
+
 			new TelaMensagem("Fim do experimento, por favor chamar o experimentador", false).ShowDialog();
 			backGround.Close();
-
-			geradorRelatorio.GerarRelatorio();
 		}
 	}
 }
