@@ -104,8 +104,10 @@ namespace Context {
 				return;
 			}
 			var numeroParticipante = numNumeroParticipante.Value;
-
-			
+			if (numeroParticipante == 0) {
+				MessageBox.Show("O número do participante é obrigatório!", "Erro", MessageBoxButtons.OK, MessageBoxIcon.Stop);
+				return;
+			}
 
 			var backGround = new TelaMensagem("", false);
 			backGround.Show();

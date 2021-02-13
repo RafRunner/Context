@@ -26,7 +26,7 @@ namespace Context.src.arquivos {
 			) {
 			var horaInicio = DateTime.Now;
 
-			nomeArquivo = $"{horaInicio.ToString(FORMATO_DATE_TIME_ARQUIVO)}-{nomePesquisador}-{nomeParticipante}.txt";
+			nomeArquivo = $"{horaInicio.ToString(FORMATO_DATE_TIME_ARQUIVO)}-{nomePesquisador}-{numeroParticipante}-{nomeParticipante}.txt";
 
 			conteudoRelatorio.AppendLine($"Iniciando novo experimento. Data: {horaInicio.ToString(FORMATO_DATE_TIME)}\n")
 				.AppendLine("Experimentador: " + nomePesquisador)
