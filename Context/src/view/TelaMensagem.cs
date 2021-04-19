@@ -1,11 +1,6 @@
-﻿using System;
-using System.Collections.Generic;
-using System.ComponentModel;
-using System.Data;
+﻿using Context.src.view.helpers;
+using System;
 using System.Drawing;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using System.Windows.Forms;
 
 namespace Context.src.view {
@@ -20,6 +15,15 @@ namespace Context.src.view {
 			InitializeComponent();
 
 			this.fechaAoClicar = fechaAoClicar;
+
+			Location = new Point(0, 0);
+			Size = new Size(width, height);
+
+			var heightRatio = height / 1080.0;
+			var widthRatio = width / 1920.0;
+
+			ViewHelper.CorrigeTamanhoEPosicao(lblMensagem, heightRatio, widthRatio);
+			ViewHelper.CorrigeFonte(lblMensagem, heightRatio);
 
 			lblMensagem.MaximumSize = new Size((int)(width * 0.8), 0);
 			lblMensagem.AutoSize = true;

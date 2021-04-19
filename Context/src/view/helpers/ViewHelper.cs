@@ -29,8 +29,8 @@ namespace Context.src.view.helpers {
 			};
 		}
 
-		public static void CorrigeFonte(Label label, double heightRatio) {
-			label.Font = new Font(label.Font.Name, Convert.ToInt32(label.Font.Size * heightRatio));
+		public static void CorrigeFonte(Control controle, double heightRatio) {
+			controle.Font = new Font(controle.Font.Name, Convert.ToInt32(controle.Font.Size * heightRatio));
 		}
 	}
 }
