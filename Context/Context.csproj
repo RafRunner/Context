@@ -46,9 +46,12 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="src\arquivos\Arquivos.cs" />
+    <Compile Include="src\arquivos\Ambiente.cs" />
     <Compile Include="src\arquivos\GeradorRelatorio.cs" />
-    <Compile Include="src\view\helpers\ViewHelper.cs" />
+    <Compile Include="src\model\ConfigExperimento.cs" />
+    <Compile Include="src\services\ImagemService.cs" />
+    <Compile Include="src\utils\ImageUtils.cs" />
+    <Compile Include="src\utils\ViewUtils.cs" />
     <Compile Include="src\view\MenuInicial.cs">
       <SubType>Form</SubType>
     </Compile>

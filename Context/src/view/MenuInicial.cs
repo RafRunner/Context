@@ -1,6 +1,6 @@
 ﻿using Context.src.arquivos;
+using Context.src.utils;
 using Context.src.view;
-using Context.src.view.helpers;
 using System;
 using System.Collections.Generic;
 using System.IO;
@@ -33,16 +33,16 @@ namespace Context {
 				.AppendLine(numNumeroParticipante.Value.ToString())
 				.AppendLine(tbArquivoFrases.Text);
 
-			var arquivoCache = Arquivos.CriaPastaRelativa(PASTA_CACHE) + $"\\{ARQUIVO_ULTIMA_CONFIG}";
+			var arquivoCache = Ambiente.CriaPastaRelativa(PASTA_CACHE) + $"\\{ARQUIVO_ULTIMA_CONFIG}";
 			File.WriteAllText(arquivoCache, configAtual.ToString());
 		}
 
 		private void CarregarUltimaConfig() {
-			if (!File.Exists(Arquivos.GetCaminhoAbsoluto(PASTA_CACHE, ARQUIVO_ULTIMA_CONFIG))) {
+			if (!File.Exists(Ambiente.GetCaminhoAbsoluto(PASTA_CACHE, ARQUIVO_ULTIMA_CONFIG))) {
 				return;
 			}
 
-			var configAnterior = Arquivos.LerArquivoRelativo(PASTA_CACHE, ARQUIVO_ULTIMA_CONFIG);
+			var configAnterior = Ambiente.LerArquivoRelativo(PASTA_CACHE, ARQUIVO_ULTIMA_CONFIG);
 
 			tbNomePesquisador.Text = configAnterior[0];
 			tbNomeParticipante.Text = configAnterior[1];
@@ -56,13 +56,13 @@ namespace Context {
 			if (string.IsNullOrEmpty(arquivo)) return;
 
 			frases = new List<string>();
-			Arquivos.LerArquivo(arquivo).FindAll(linha => !string.IsNullOrWhiteSpace(linha)).ForEach(frase => {
+			Ambiente.LerArquivo(arquivo).FindAll(linha => !string.IsNullOrWhiteSpace(linha)).ForEach(frase => {
 				frases.Add(frase.Replace("\\n", "\r\n"));
 			});
 		}
 
 		private void btnSelecionarArquivo_Click(object sender, EventArgs e) {
-			string nomeArquivoFrases = ViewHelper.SelecionaArquivoComFiltro(openFileDialog, "TXT|*.txt");
+			string nomeArquivoFrases = ViewUtils.SelecionaArquivoComFiltro(openFileDialog, "TXT|*.txt");
 			if (string.IsNullOrEmpty(nomeArquivoFrases)) {
 				return;
 			}

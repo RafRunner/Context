@@ -35,6 +35,7 @@
 			this.lblMensagem.Size = new System.Drawing.Size(283, 62);
 			this.lblMensagem.TabIndex = 0;
 			this.lblMensagem.Text = "Mensagem";
+			this.lblMensagem.Click += new System.EventHandler(this.LblMensagem_Click);
 			// 
 			// TelaMensagem
 			// 

@@ -58,7 +58,7 @@ namespace Context.src.arquivos {
 			conteudoRelatorio.AppendLine("/////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////")
 				.AppendLine("\nExperimento finalizado. Hora do fim: " + horaFim.ToString(FORMATO_TIME));
 
-			var caminhoRelatorio = Arquivos.CriaPastaRelativa(PASTA_RELATORIOS) + "\\" + nomeArquivo;
+			var caminhoRelatorio = Ambiente.CriaPastaRelativa(PASTA_RELATORIOS) + "\\" + nomeArquivo;
 			File.WriteAllText(caminhoRelatorio, conteudoRelatorio.ToString());
 		}
 	}

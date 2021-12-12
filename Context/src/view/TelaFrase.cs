@@ -1,5 +1,5 @@
 ﻿using Context.src.arquivos;
-using Context.src.view.helpers;
+using Context.src.utils;
 using System;
 using System.Collections.Generic;
 using System.Drawing;
@@ -25,17 +25,7 @@ namespace Context.src.view {
 			Location = new Point(0, 0);
 			Size = new Size(width, height);
 
-			var heightRatio = height / 1080.0;
-			var widthRatio = width / 1920.0;
-
-			ViewHelper.CorrigeTamanhoEPosicao(lblFrase, heightRatio, widthRatio);
-			ViewHelper.CorrigeTamanhoEPosicao(lblInstrucao, heightRatio, widthRatio);
-			ViewHelper.CorrigeTamanhoEPosicao(tbResposta, heightRatio, widthRatio);
-			ViewHelper.CorrigeTamanhoEPosicao(btnGravarResposta, heightRatio, widthRatio);
-			ViewHelper.CorrigeFonte(lblFrase, heightRatio);
-			ViewHelper.CorrigeFonte(lblInstrucao, heightRatio);
-			ViewHelper.CorrigeFonte(tbResposta, heightRatio);
-			ViewHelper.CorrigeFonte(btnGravarResposta, heightRatio);
+			ViewUtils.CorrigeEscalaTodosOsFilhos(this);
 
 			lblFrase.MaximumSize = new Size(tbResposta.Width, 0);
 			lblFrase.AutoSize = true;
