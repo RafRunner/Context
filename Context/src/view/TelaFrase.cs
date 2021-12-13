@@ -1,7 +1,7 @@
 ﻿using Context.src.arquivos;
+using Context.src.model;
 using Context.src.utils;
 using System;
-using System.Collections.Generic;
 using System.Drawing;
 using System.Windows.Forms;
 
@@ -11,15 +11,15 @@ namespace Context.src.view {
 		private readonly int height = Screen.PrimaryScreen.Bounds.Height;
 		private readonly int width = Screen.PrimaryScreen.Bounds.Width;
 
-		private readonly List<string> frases;
-		private int indexFraseAtual = 0;
+		private readonly ConfigExperimento configExperimento;
+		private int indexEstimuloAtual = 0;
 
 		private readonly GeradorRelatorio geradorRelatorio;
 
-		public TelaFrase(List<string> frases, GeradorRelatorio geradorRelatorio) {
+		public TelaFrase(ConfigExperimento configExperimento, GeradorRelatorio geradorRelatorio) {
 			InitializeComponent();
 
-			this.frases = frases;
+			this.configExperimento = configExperimento;
 			this.geradorRelatorio = geradorRelatorio;
 
 			Location = new Point(0, 0);
@@ -27,40 +27,38 @@ namespace Context.src.view {
 
 			ViewUtils.CorrigeEscalaTodosOsFilhos(this);
 
-			lblFrase.MaximumSize = new Size(tbResposta.Width, 0);
-			lblFrase.AutoSize = true;
-
-			lblInstrucao.MaximumSize = new Size(tbResposta.Width, 0);
-			lblInstrucao.AutoSize = true;
-
 			MudarFrase();
 		}
 
 		private void MudarFrase() {
-			lblFrase.Text = frases[indexFraseAtual++];
-			lblFrase.Location = new Point((width - lblFrase.Width) / 2, lblFrase.Location.Y);
+			var estimuloAtual = configExperimento.Estimulos[indexEstimuloAtual];
+			ViewUtils.ChangeTextWithSpecialStyles(rtbFrase, estimuloAtual.FraseModelo);
+			ViewUtils.ChangeTextWithSpecialStyles(rtbIntrucao, estimuloAtual.Instrucao);
+
+			rtbFrase.SelectionAlignment = HorizontalAlignment.Center;
+			rtbIntrucao.SelectionAlignment = HorizontalAlignment.Center;
+			if (estimuloAtual.Imagem != null) {
+				pictureImagem.Image = ImageUtils.Resize(estimuloAtual.Imagem, pictureImagem.Width, pictureImagem.Height);
+			}
+			else {
+				pictureImagem.Image = null;
+			}
+
 			tbResposta.Text = "";
-
-			MudarInstrucao();
 			tbResposta.Focus();
-		}
 
-		private void MudarInstrucao() {
-			var alturaAnterior = lblInstrucao.Height;
-			lblInstrucao.Text = frases[indexFraseAtual++];
-			lblInstrucao.Location = new Point((width - lblInstrucao.Width) / 2, lblInstrucao.Location.Y - lblInstrucao.Height + alturaAnterior);
-			Size = new Size(width, height);
+			indexEstimuloAtual++;
 		}
 
 		private void btnGravarResposta_Click(object sender, EventArgs e) {
 			var resposta = tbResposta.Text;
-			if (string.IsNullOrEmpty(resposta)) {
+			if (string.IsNullOrWhiteSpace(resposta)) {
 				return;
 			}
 
-			geradorRelatorio.AdicionarEvento($"Resposta registrada para a {indexFraseAtual / 2}ª frase/instrução:\n{tbResposta.Text}\n");
+			geradorRelatorio.AdicionarEvento($"Resposta registrada para a {indexEstimuloAtual}ª frase/instrução/imagem:\n{tbResposta.Text}\n");
 
-			if (indexFraseAtual == frases.Count) {
+			if (indexEstimuloAtual == configExperimento.Estimulos.Count) {
 				Close();
 				return;
 			}

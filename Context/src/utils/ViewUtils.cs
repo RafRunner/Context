@@ -76,5 +76,48 @@ namespace Context.src.utils {
         public static long GetIdColunaSelecionada(DataGridView dataGrid) {
             return long.Parse(dataGrid.SelectedRows[0].Cells["Id"].Value.ToString());
         }
+
+        // Texto entre "*" ficará como negrito e entre "_" firacá como underline, "-" como itálico e "~" como riscado
+        public static void ChangeTextWithSpecialStyles(RichTextBox rtb, string text) {
+            rtb.Clear();
+            if (string.IsNullOrWhiteSpace(text)) {
+                return;
+			}
+
+            var boldActive = false;
+            var italicActive = false;
+            var underlineActive = false;
+            var strikeActive = false;
+
+            var textArray = text.ToCharArray();
+            var font = rtb.Font;
+
+            for (int i = 0; i < text.Length; i++) {
+                var currentChar = textArray[i];
+                if (currentChar == '*') {
+                    rtb.SelectionStart = rtb.Text.Length;
+                    rtb.SelectionFont = new Font(font, boldActive ? FontStyle.Regular : FontStyle.Bold);
+                    boldActive = !boldActive;
+				}
+                else if (currentChar == '-') {
+                    rtb.SelectionStart = rtb.Text.Length;
+                    rtb.SelectionFont = new Font(font, italicActive ? FontStyle.Regular : FontStyle.Italic);
+                    italicActive = !italicActive;
+                }
+                else if (currentChar == '_') {
+                    rtb.SelectionStart = rtb.Text.Length;
+                    rtb.SelectionFont = new Font(font, underlineActive ? FontStyle.Regular : FontStyle.Underline);
+                    underlineActive = !underlineActive;
+                }
+                else if (currentChar == '-') {
+                    rtb.SelectionStart = rtb.Text.Length;
+                    rtb.SelectionFont = new Font(font, strikeActive ? FontStyle.Regular : FontStyle.Strikeout);
+                    strikeActive = !strikeActive;
+                }
+                else {
+                    rtb.AppendText(currentChar.ToString());
+				}
+            }
+		}
     }
 }

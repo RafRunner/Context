@@ -1,16 +1,14 @@
 ﻿using Context.src.arquivos;
+using Context.src.model;
 using Context.src.utils;
 using Context.src.view;
 using System;
-using System.Collections.Generic;
 using System.IO;
 using System.Text;
 using System.Windows.Forms;
 
 namespace Context {
 	public partial class Form1 : Form {
-
-		private List<string> frases = null;
 
 		private static string PASTA_CACHE = "cache";
 		private static string ARQUIVO_ULTIMA_CONFIG = "ultima_config.txt";
@@ -52,15 +50,6 @@ namespace Context {
 			tbArquivoFrases.Text = configAnterior[5];
 		}
 
-		private void CarregaFrasesArquivo(string arquivo) {
-			if (string.IsNullOrEmpty(arquivo)) return;
-
-			frases = new List<string>();
-			Ambiente.LerArquivo(arquivo).FindAll(linha => !string.IsNullOrWhiteSpace(linha)).ForEach(frase => {
-				frases.Add(frase.Replace("\\n", "\r\n"));
-			});
-		}
-
 		private void btnSelecionarArquivo_Click(object sender, EventArgs e) {
 			string nomeArquivoFrases = ViewUtils.SelecionaArquivoComFiltro(openFileDialog, "TXT|*.txt");
 			if (string.IsNullOrEmpty(nomeArquivoFrases)) {
@@ -70,17 +59,9 @@ namespace Context {
 		}
 
 		private void btnIniciar_Click(object sender, EventArgs e) {
-			CarregaFrasesArquivo(tbArquivoFrases.Text);
-			if (frases == null) {
-				MessageBox.Show("Nenhum arquivo de frases selecionado!", "Erro", MessageBoxButtons.OK, MessageBoxIcon.Stop);
-				return;
-			}
-			if (frases.Count == 0) {
-				MessageBox.Show("Arquivo de frases selecionado está vazio!", "Erro", MessageBoxButtons.OK, MessageBoxIcon.Stop);
-				return;
-			}
-			if (frases.Count % 2 != 0) {
-				MessageBox.Show("Arquivo de frases Deve ter um número par de linhas (pares de frases/instruções)!", "Erro", MessageBoxButtons.OK, MessageBoxIcon.Stop);
+			var config = ConfigExperimento.CriaPorArquivo(tbArquivoFrases.Text);
+			if (config == null) {
+				MessageBox.Show("Nenhum arquivo de configuração selecionado!", "Erro", MessageBoxButtons.OK, MessageBoxIcon.Stop);
 				return;
 			}
 			var nomePesquisador = tbNomePesquisador.Text;
@@ -119,9 +100,9 @@ namespace Context {
 				 Convert.ToInt32(idadeParticipante),
 				 sexoParticipante.ToString(),
 				 Convert.ToInt32(numeroParticipante),
-				 frases
+				 config
 			 );
-			new TelaFrase(frases, geradorRelatorio).ShowDialog();
+			new TelaFrase(config, geradorRelatorio).ShowDialog();
 			geradorRelatorio.GerarRelatorio();
 
 			new TelaMensagem("Fim do experimento, por favor chamar o experimentador", false).ShowDialog();

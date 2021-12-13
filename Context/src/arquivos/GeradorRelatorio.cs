@@ -1,4 +1,5 @@
-﻿using System;
+﻿using Context.src.model;
+using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
@@ -22,7 +23,7 @@ namespace Context.src.arquivos {
 			int idadeParticipante,
 			string sexoParticipante,
 			int numeroParticipante,
-			List<string> frases
+			ConfigExperimento config
 			) {
 			var horaInicio = DateTime.Now;
 
@@ -34,12 +35,16 @@ namespace Context.src.arquivos {
 				.AppendLine("Idade participante: " + idadeParticipante)
 				.AppendLine("Sexo participante: " + sexoParticipante)
 				.AppendLine("Número participante: " + numeroParticipante)
-				.AppendLine("\nFrases/Instruções usadas:\n");
+				.AppendLine("\nFrases/Instruções/Imagens usadas:\n");
 
-			for (int i = 0; i < frases.Count; i++) {
-				if (i % 2 == 0) conteudoRelatorio.Append(i / 2 + 1 + " - ");
-				conteudoRelatorio.AppendLine(frases[i].Replace("\r\n", "\\n"));
-				if (i % 2 != 0) conteudoRelatorio.AppendLine();
+			for (int i = 0; i < config.Estimulos.Count; i++) {
+				var estimulo = config.Estimulos[i];
+
+				conteudoRelatorio.AppendLine(i + 1 + ":")
+					.Append("Frase modelo: ").AppendLine(estimulo.FraseModelo)
+					.Append("Instrução: ").AppendLine(estimulo.Instrucao)
+					.Append("Nome imagem: ").AppendLine(estimulo.NomeImagem)
+					.AppendLine();
 			}
 
 			conteudoRelatorio.AppendLine("/////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////\n")
